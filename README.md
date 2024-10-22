@@ -201,3 +201,30 @@ When showing toasts in React-Toastify, you can customize their appearance and be
 - **`pauseOnHover`**: Pauses the auto-close timer when the user hovers over the toast.
 
 You can pass these options either inside the `ToastContainer` for global control or directly when calling the `toast` function.
+
+### Overwriting Default Options
+
+You can set default options in the `ToastContainer`. These options will apply to all toasts unless specified otherwise. For example:
+
+```
+<ToastContainer
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+/>
+```
+
+If you want to customize the options for a specific toast, you can pass the available attributes directly to the toast() function.
+This allows you to have different settings for different toast types. For example:
+
+```
+toast.success('This is a success message!', {
+  autoClose: 2000, // Overrides default autoClose
+});
+
+toast.error('This is an error message!', {
+  autoClose: 5000, // Different autoClose for error
+});
+```
+
+This flexibility lets you tailor the user experience based on the context of each notification.
