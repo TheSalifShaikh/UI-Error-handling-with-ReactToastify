@@ -28,6 +28,7 @@ yarn add react-toastify
 The `ToastContainer` is what actually renders the toast notifications on the screen. It can be added to any part of your React app but is often placed in a higher-level component like `App.jsx` or `main.jsx`. Let’s create a separate component for the `ToastContainer` to keep things organized. Or you can directly use it in higher-level component.
 
 ### **Direct Call in App.jsx**
+
 ```
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -133,3 +134,70 @@ export default App;
   - We use `axios.get()` to make an API request.
   - If the request is successful (inside the `try` block), we call `toast.success()` to show a success message.
   - If there’s an error (inside the `catch` block), we call `toast.error()` to show an error message.
+
+---
+
+#### **DirectToast.jsx**
+
+```
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+function DirectToast() {
+  useEffect(() => {
+    // Make API call and directly call toast in the promise chain
+    axios.get('https://jsonplaceholder.typicode.com/posts/1')
+      .then((response) => {
+        // Show success toast directly
+        toast.success('Data fetched successfully!');
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // Show error toast directly
+        toast.error('Error fetching data.');
+      });
+  }, []);
+
+  return (
+    <div>
+      <h1>Data Fetching on Component Mount</h1>
+    </div>
+  );
+}
+
+export default AppDirectToast;
+```
+
+### Explanation
+- We use the `useEffect` hook to make an API call when the component is first loaded (mounted).
+- In the `.then()` block (after the successful request), we call `toast.success()` directly.
+- In the `.catch()` block (when the request fails), we call `toast.error()` directly.
+- This approach is simpler but less flexible if you need to reuse the logic.
+
+---
+
+## 4. Why Are We Using `toast` in Axios API Calls?
+
+Let’s explain the reasoning step-by-step, assuming a user is new to development:
+
+### a. Why Use a Toast for Success?
+- **Purpose:** When the API request is successful, you want to notify the user that everything went well. This is where we use a **success toast** to give positive feedback.
+- **Example:** When a user submits a form and the data is saved successfully, a toast saying, "Data saved!" reassures the user that the action was completed.
+
+### b. Why Use a Toast for Errors?
+- **Purpose:** If something goes wrong during the API request (like a server issue or bad internet connection), it’s important to alert the user. This is done with an **error toast**.
+- **Example:** If the API call fails to fetch data, an error toast like "Error fetching data" informs the user that something went wrong, and they may need to retry or check their connection.
+
+---
+
+## 5. Key Options in Toast Customization
+
+When showing toasts in React-Toastify, you can customize their appearance and behavior to suit your needs:
+
+- **`position`**: Controls where the toast appears on the screen (e.g., `top-right`, `bottom-left`).
+- **`autoClose`**: Determines how long the toast stays visible (in milliseconds).
+- **`hideProgressBar`**: Hides or shows the progress bar.
+- **`pauseOnHover`**: Pauses the auto-close timer when the user hovers over the toast.
+
+You can pass these options either inside the `ToastContainer` for global control or directly when calling the `toast` function.
